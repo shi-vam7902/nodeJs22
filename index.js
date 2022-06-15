@@ -6,6 +6,7 @@ app.use(express.urlencoded({ extended: true }))
 
 
 app.post("/signup", session.signup)
+app.post("/login", session.login)
 
 
 app.listen(9090, function () {
