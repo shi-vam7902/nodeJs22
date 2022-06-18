@@ -6,6 +6,7 @@ const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+// mongo db connect 
 mongoose.connect("mongodb://localhost:9090/royaldb",function(err)
 {
     if(err)
