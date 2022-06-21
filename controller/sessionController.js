@@ -36,6 +36,9 @@ module.exports.signup = function(req,res)
         
     })
 
+
+
+}
 module.exports.getAllUsers = function(req,res){
     UserModel.find(function (err,data) {
         if(err)
@@ -56,6 +59,4 @@ module.exports.getAllUsers = function(req,res){
         }
         
     })
-}
-
 }
