@@ -78,36 +78,119 @@ let errorMsg = []
 }
 module.exports.login = function(req,res)
 {
-    let email = req.body.email
-    let password = req.body.password
-
-    //authentication
-    let user = undefined
-    let isBingo = false
+    let email=req.body.email
+    let password=req.body.password
     
-    for(i = 0 ; i<users.length ;i++)
+    let isCorrect = false;
+    let user = undefined
+    //authentication
+    //console.log(users)
+    for(i=0;i<users.length;i++)
     {
-        if(users[i].email == email && users[i].password == password)
+        if(users[i].email == email && users[i].password==password)
         {
-            user = users[i]
-            isBingo = true
+            user=users[i];
+            isCorrect = true;
             break;
         }
     }
-    if(isBingo == true)
+
+    if (isCorrect == true)
+        {
+            res.json({
+                Data:user,
+                msg:"Login Done",
+                status:200
+            })
+        }
+        else
+        {
+            res.json({
+                data:req.body,
+                "message":"Invalid credentials",
+                "status":-1
+            })
+        }
+    }
+       
+
+module.exports.forgetPass = function(req,res)
+{
+    let email=req.body.email
+    let isCorrect= false;
+    let otp=0
+
+    //authentication
+    for(i=0;i<users.length;i++)
+    {
+        console.log("In for",otp)
+        if(users[i].email ==email)
+        {
+            otp=parseInt(Math.random()*1000000);
+            console.log("In if",otp)
+            users[i].otp =otp;
+            isCorrect=true;
+            break;
+        }
+        else
+        {
+            console.log("In else",otp)
+        }
+       
+    }
+    if(isCorrect=true)
     {
         res.json({
-            "msg":"Login Done",
-            "data":user,
-            status:-1,
+            data:otp,
+            msg:"Otp sent",
+            status:200
         })
     }
     else{
         res.json({
-            "msg":"invalid Credentials",
-            "data":user,
+            data:req.body,
+            msg:"Invalid email",
             status:-1
         })
     }
 }
+module.exports.resetPass=function(req,res)
+{
+    let email=req.body.email
+    let isCorrect=false
+    let otp = req.body.otp
+    let password=req.body.password
 
+    //authentication
+    for(i=0;i<users.length;i++)
+    {
+        console.log("In for",otp)
+        if(users[i].email==email && users[i].otp==otp)
+        {
+            users[i].otp=-12345;
+            isCorrect=true;
+            users[i].password=password
+            console.log("In if",otp)
+            break;
+        }
+        else{
+            console.log("else block in if ")
+        }
+    }
+    if(isCorrect=true)
+    {
+        res.json({
+            data:req.body,
+            msg:"Password successfully changed",
+            status:200
+        })
+    }
+    else
+    {
+        res.json({
+            data:req.body,
+            msg:"Invalid data",
+            status:-1
+        })
+    }
+}
